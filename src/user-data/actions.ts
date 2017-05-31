@@ -19,8 +19,7 @@ export interface UserData {
   errorMessage?: string;
 }
 
-export interface UserDataPropType {
-  userData: UserData;
+export interface UserDataActions {
   fetchData: () => void;
   cancelFetch: () => void;
 }

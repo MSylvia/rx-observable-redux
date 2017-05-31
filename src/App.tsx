@@ -1,23 +1,20 @@
 import * as React from 'react';
 import './App.css';
 
-import * as Redux from 'react-redux';
-import { fetchData, cancelFetchUser, UserDataPropType } from './user-data/actions';
+import { UserDataActions, UserData } from './user-data/actions';
 
 const logo = require('./logo.svg');
 
-interface AppProps extends UserDataPropType { }
-
-class App extends React.Component<AppProps, undefined> {
+export class App extends React.Component<UserDataActions & UserData, undefined> {
 
   getUsers() {
-    if (!this.props.userData.isFetching) {
+    if (!this.props.isFetching) {
       this.props.fetchData();
     } 
   }
 
   cancelGetUsers() {
-    if (this.props.userData.isFetching) {
+    if (this.props.isFetching) {
       this.props.cancelFetch();
     }
   }
@@ -40,16 +37,16 @@ class App extends React.Component<AppProps, undefined> {
         </button>
         {
           // Loading
-          this.props.userData.isFetching && <div>Loading</div>
+          this.props.isFetching && <div>Loading</div>
         }
         {
           // Failed
-          this.props.userData.error && <div>Error:{this.props.userData.errorMessage}</div>
+          this.props.error && <div>Error:{this.props.errorMessage}</div>
         }
         {
           // Have data
-          this.props.userData.data.length ? (
-            this.props.userData.data.map((person, i) => {
+          this.props.data.length ? (
+            this.props.data.map((person, i) => {
               return (
                 <div key={i} >
                   <p>Name: {person.name}</p>
@@ -63,19 +60,3 @@ class App extends React.Component<AppProps, undefined> {
     );
   }
 }
-
-// State to props
-
-const mapStateToProps = (state: any) => ({
-  userData: state.userdata
-});
-const mapDispatchToProps = (dispatch: Redux.Dispatch<{}>): {}  => ({
-  fetchData: () => dispatch(fetchData()),
-  cancelFetch: () => dispatch(cancelFetchUser())
-});
-
-// Export and connect
-export default Redux.connect<{}, AppProps, {}>(
-  mapStateToProps,
-  mapDispatchToProps
-)(App);
