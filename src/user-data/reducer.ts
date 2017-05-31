@@ -1,5 +1,5 @@
 import { FETCHING_DATA, FETCHING_DATA_SUCCESS, FETCHING_DATA_FAILURE, FETCH_USER_CANCELLED } from './constants';
-import { Action, UserData } from './actions'
+import { Action, UserData } from './actions';
 
 const initialState = {
   data: [],

@@ -1,10 +1,11 @@
-import { FETCHING_DATA, FETCH_USER_CANCELLED } from './constants'
-import { getDataSuccess, getDataFailure, Action } from './actions'
-import getPeople from './api'
+import { FETCHING_DATA, FETCH_USER_CANCELLED } from './constants';
+import { getDataSuccess, getDataFailure, Action } from './actions';
+import getPeople from './api';
 
-import { Observable } from 'rxjs'
+import { Observable } from 'rxjs';
+import { ActionsObservable } from 'redux-observable';
 
-const fetchUserEpic = (action$: any) =>
+const fetchUserEpic = (action$: ActionsObservable<Action>) =>
   action$.ofType(FETCHING_DATA)
     .mergeMap((action: Action) =>
       Observable.fromPromise(getPeople())
@@ -13,4 +14,4 @@ const fetchUserEpic = (action$: any) =>
         .catch(error => Observable.of(getDataFailure(error)))
       );
 
-export default fetchUserEpic
+export default fetchUserEpic;
