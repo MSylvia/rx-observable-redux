@@ -1,4 +1,5 @@
 import { FETCHING_DATA, FETCHING_DATA_SUCCESS, FETCHING_DATA_FAILURE, FETCH_USER_CANCELLED } from './constants';
+import { Action, UserData } from './actions'
 
 const initialState = {
   data: [],
@@ -7,7 +8,7 @@ const initialState = {
   error: false
 };
 
-export default function dataReducer (state = initialState, action: any) {
+export default function dataReducer (state: UserData = initialState, action: Action) {
   switch (action.type) {
     case FETCHING_DATA:
       return {
@@ -20,13 +21,15 @@ export default function dataReducer (state = initialState, action: any) {
         ...state,
         isFetching: false,
         dataFetched: true,
-        data: action.data
+        data: action.data,
+        error: false
       };
     case FETCHING_DATA_FAILURE:
       return {
         ...state,
         isFetching: false,
-        error: true
+        error: true,
+        errorMessage: action.errorMessage
       };
     case FETCH_USER_CANCELLED:
       return {

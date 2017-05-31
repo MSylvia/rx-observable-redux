@@ -9,7 +9,12 @@ const people = [
 export default () => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      return resolve(people)
-    }, 3000)
+      // 50/50 change of failure.
+      if(Math.random() >= 0.5){
+       return resolve(people)
+      } else {
+        return reject("Request Failed.")
+      }  
+    }, 1000)
   })
 }

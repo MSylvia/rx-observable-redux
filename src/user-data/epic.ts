@@ -1,14 +1,8 @@
 import { FETCHING_DATA, FETCH_USER_CANCELLED } from './constants'
-import { getDataSuccess, getDataFailure } from './actions'
+import { getDataSuccess, getDataFailure, Action } from './actions'
 import getPeople from './api'
 
 import { Observable } from 'rxjs'
-
-interface Action {
-  type: string;
-  data: any;
-  errorMessage?: any;
-}
 
 const fetchUserEpic = (action$: any) =>
   action$.ofType(FETCHING_DATA)

@@ -2,29 +2,24 @@ import * as React from 'react';
 import './App.css';
 
 import * as Redux from 'react-redux'
-import { fetchData, cancelFetchUser } from './user-data/actions'
+import { fetchData, cancelFetchUser, UserDataPropType } from './user-data/actions'
 
 const logo = require('./logo.svg');
 
-interface Person {
-  name: string;
-  age: number;
-}
+interface AppProps extends UserDataPropType { }
 
-interface UserData {
-  data: Person[];
-  dataFetched: boolean;
-  isFetching: boolean;
-  error: any;
-}
+class App extends React.Component<AppProps, undefined> {
 
-interface UserDataPropType {
-  userData: UserData
-  fetchData: () => void;
-  cancelFetch: () => void;
-}
+  getUsers() {
+    if(!this.props.userData.isFetching)
+      this.props.fetchData()
+  }
 
-class App extends React.Component<UserDataPropType, undefined> {
+  cancelGetUsers() {
+    if(this.props.userData.isFetching)
+      this.props.cancelFetch()
+  }
+
   render() {
     return (
       <div className="App">
@@ -35,16 +30,22 @@ class App extends React.Component<UserDataPropType, undefined> {
         <p className="App-intro">
           To get started, edit <code>src/App.tsx</code> and save to reload.
         </p>
-        <button onClick={() => this.props.fetchData()}>
+        <button onClick={() => this.getUsers()}>
           Fetch
         </button>
-        <button onClick={() => this.props.cancelFetch()}>
+        <button onClick={() => this.cancelGetUsers()}>
           Cancel Fetch
         </button>
         {
+          // Loading
           this.props.userData.isFetching && <div>Loading</div>
         }
         {
+          // Failed
+          this.props.userData.error && <div>Error: {this.props.userData.errorMessage}</div>
+        }
+        {
+          // Have data
           this.props.userData.data.length ? (
             this.props.userData.data.map((person, i) => {
               return <div key={i} >
@@ -59,6 +60,8 @@ class App extends React.Component<UserDataPropType, undefined> {
   }
 }
 
+// State to props
+
 const mapStateToProps = (state: any) => {
   return {
     userData: state.userdata
@@ -71,7 +74,8 @@ const mapDispatchToProps = (dispatch: Redux.Dispatch<any>): any  => {
   }
 }
 
-export default Redux.connect<{}, UserDataPropType, {}>(
+// Export and connect
+export default Redux.connect<{}, AppProps, {}>(
   mapStateToProps,
   mapDispatchToProps
 )(App)
