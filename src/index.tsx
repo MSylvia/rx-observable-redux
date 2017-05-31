@@ -6,9 +6,7 @@ import AppContainer from './AppContainer';
 import './index.css';
 
 import { Provider } from 'react-redux';
-import configureStore from './state/configure-store';
-
-const store = configureStore();
+import store from './Store';
 
 ReactDOM.render(
   <Provider store={store}>
